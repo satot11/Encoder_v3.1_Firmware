@@ -1,3 +1,4 @@
+-- vhdl-linter-disable not-declared type-resolved component
 ----------------------------------------------------------------------------------
 -- Company: 
 -- Engineer: 
