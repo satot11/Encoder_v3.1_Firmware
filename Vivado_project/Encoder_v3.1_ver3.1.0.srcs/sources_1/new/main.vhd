@@ -784,9 +784,9 @@ AP_ON           <= AP_ON_RBCP and AP_ON_LatchUp;
 DAC_Set         <= DAC_Set_RBCP or DAC_Set_LatchUp;
 
 LU_Recover  : LURecover
-generic map (   lu_time     => x"2710",
-                off_time    => x"10000000",
-                on_time     => x"10000000"  )     
+generic map (   lu_time     => x"2710",        -- 100 us
+                off_time    => x"10000000",    -- 2.68 s
+                on_time     => x"10000000"  )  -- 2.68 s   
 Port map    (   clk         => clk_100M,
                 rst         => SystemRst,
                 hit_flag    => hit_flag,
@@ -1264,6 +1264,12 @@ ADC_BIAS_DATA_OB    : OBUF	generic map	( IOSTANDARD => "LVCMOS33",	DRIVE => 4,		
 
 
 -----  SiTCP  -----
+-- st_cnt_rst は PHY (LAN8810) のリセット信号。
+-- PLLがロックされてから198 count (0.99 us) 後にリセット解除。
+
+-- st_sys_rst は SiTCP のリセット信号。
+-- INIT_LAN8810 の O_RESET と接続されていて、PHYの初期化プロセスを完了するとSiTCPのリセットが解除される。
+
 process(clk_200M, locked)
 begin
     if locked='0' then
@@ -1286,6 +1292,8 @@ begin
     end if;
 end process;
 
+-- PHYがMII (RX clock: 25MHz) か GMII (RX clock: 125MHz) かを判定して gmii_1000M を設定する。
+-- 200MHz clock で 199 count 中に RX clock の立ち上がりが64 count 以上あれば GMII
 process (clk_200M, st_sys_rst)
 begin
     if st_sys_rst='1' then
@@ -1316,7 +1324,7 @@ begin
         gmii_1000M              <= '0';
     elsif clk_200M'event and clk_200M='1' then
         if cnt_lod='1' then
-            gmii_1000M          <= rx_cnt(6);
+            gmii_1000M          <= rx_cnt(6);  -- (if rx_cnt >= 64)
         else
             gmii_1000M          <= gmii_1000M;
         end if;
