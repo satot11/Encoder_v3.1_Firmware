@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.encoding": "utf8",
+		"files.associations": {
+			"*.vhd": "vhdl"
+		},
+		"[vhdl]": {
+			"files.encoding": "shiftjis"
+		}
+	}
+}
