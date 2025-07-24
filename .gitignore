@@ -1,0 +1,14 @@
+# logファイルとか
+*.log
+*.jou
+*.tmp
+*.str
+
+# 中間生成ディレクトリはすべて.xprから生成できるので、.src以外すべて消す
+Vivado_project/.Xil
+Vivado_project/Encoder_v3.1_ver3.1.0.cache
+Vivado_project/Encoder_v3.1_ver3.1.0.gen
+Vivado_project/Encoder_v3.1_ver3.1.0.hw
+Vivado_project/Encoder_v3.1_ver3.1.0.ip_user_files
+Vivado_project/Encoder_v3.1_ver3.1.0.runs
+Vivado_project/Encoder_v3.1_ver3.1.0.sim
